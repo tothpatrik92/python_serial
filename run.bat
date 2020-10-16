@@ -1,2 +1,2 @@
-python cli.py
+python app.py
 pause

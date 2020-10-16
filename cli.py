@@ -32,10 +32,11 @@ def Task1(ser):
             #ser.write('\x5A\x03\x02\x02\x02\x09') # Byte ArrayTo Control a MicroProcessing Unit
             #b = ser.read(1000)
             row=ser.readline()
+            #print(row)
             d=row.decode("utf-8")
             if d.strip():Report(d)
             #if d.strip():print(d)
-            #time.sleep(0.001)
+            time.sleep(0.01)
 
         if thread_flag == 'stop': break
         else: thread_flag = 'paused'   # signals that the inner loop is done
