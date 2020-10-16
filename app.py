@@ -17,7 +17,7 @@ def callback(id, tex):
     s = 'At {} f is {}\n'.format(id, id**id/0.987)
     tex.insert(END, s)
     tex.see(END)             # Scroll if necessary
-def printToBox(str):
+def printToBox(str,tex):
     #s = 'At {} f is {}\n'.format(id, id**id/0.987)
     #tex.insert(END, s)
     tex.insert(END, str)
@@ -27,15 +27,19 @@ def printToBox(str):
 root = Tk()
 width_value=root.winfo_screenwidth()
 height_value=(root.winfo_screenheight())-100
+print(width_value)
+print(height_value)
 root.title("Zigbee CLI")
 root.geometry("%dx%d+0+0" % ((width_value/2), height_value))
 root.configure(bg='#4bb8d2')
 
-tex = Text(master=root, width=70, height=height_value)
+
+tex = Text(master=root, width=70, height=60)
 tex.place(relx=0.01, rely= 0, anchor=NW)
 
 
-
+def SendText(event=None):
+    getTextInput()
 
 def getTextInput():
     result=textExample.get("1.0","end")
@@ -45,7 +49,7 @@ def getTextInput():
 
 
 def Report(s):
-    print (s)
+    #print (s)
     sys.stdout.flush() # helps to ensure messages from different threads appear in the right order
 
 def Stop():
@@ -72,7 +76,7 @@ def Task1(ser):
             d=row.decode("utf-8")
             if d.strip():
                 Report(d)
-                printToBox(d)
+                printToBox(d,tex)
                 #
             time.sleep(0.01)
         if thread_flag == 'stop': break
@@ -104,5 +108,5 @@ Button_NwkSteering= Button(root, text="Nwk Steering",command=nwk_steering)
 Button_NwkSteering.place(relx = 0.9, rely = Y+DIST, anchor = CENTER)
 Button_NwkInfo= Button(root, text="Info",command=nwk_info)
 Button_NwkInfo.place(relx = 0.9, rely = Y+DIST+DIST, anchor = CENTER)
-
+root.bind('<Return>', SendText)
 root.mainloop()
