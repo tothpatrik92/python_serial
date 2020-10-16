@@ -33,8 +33,9 @@ def Task1(ser):
             #b = ser.read(1000)
             row=ser.readline()
             d=row.decode("utf-8")
-            if d.strip():print(d)
-            time.sleep(0.1)
+            if d.strip():Report(d)
+            #if d.strip():print(d)
+            #time.sleep(0.001)
 
         if thread_flag == 'stop': break
         else: thread_flag = 'paused'   # signals that the inner loop is done
@@ -68,9 +69,15 @@ def Main():
     Report("Starting Thread 1")
     t1.start()
 
-    time.sleep(3)
+    #time.sleep(3)
     Report("Starting Thread 2")
-    t2.start()
+    #t2.start()
+    ser.write(b'info\r\n')     # write a string
+    time.sleep(1)
+    ser.write(b'network leave\r\n')     # write a string
+    time.sleep(1)
+    ser.write(b'plugin network-steering start 0\r\n')     # write a string
+    
 
 
 if __name__ == '__main__':
