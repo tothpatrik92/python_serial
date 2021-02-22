@@ -10,9 +10,6 @@ from time import sleep
 thread_flag = None
 
 
-SERIAL_PORT="COM6"
-
-
 def cbc(id, tex):
     return lambda : callback(id, tex)
 
@@ -34,7 +31,7 @@ print(width_value)
 print(height_value)
 root.title("Zigbee CLI")
 root.geometry("%dx%d+0+0" % ((width_value/2), height_value))
-root.configure(bg='#c2d8e7')
+root.configure(bg='#4bb8d2')
 
 
 tex = Text(master=root, width=70, height=60)
@@ -85,18 +82,6 @@ def Task1(ser):
         if thread_flag == 'stop': break
         else: thread_flag = 'paused'   # signals that the inner loop is done
 
-def nwk_creator0():
-    
-    ser.write(b'plugin network-creator start 0\r\n')     # write a string
-    
-def nwk_creator1():
-    
-    ser.write(b'plugin network-creator start 0\r\n')     # write a string
-    
-def nwk_open():
-    
-    ser.write(b'plugin network-creator-security open-network\r\n')     # write a string
-
 def nwk_steering():
     
     ser.write(b'plugin network-steering start 0\r\n')     # write a string
@@ -117,8 +102,8 @@ def BlockResponse():
     ser.write(b'raw 0x0019 { 19 C8 05 00 0B 10 1C 01 06 04 00 00 00 00 00 00 3F 1E F1 EE 0B 00 01 38 00 00 00 0B 10 1C 01 06 04 00 00 02 00 45 42 4C 20 70 72 6F 6A 65 63 74 5F 7A 6F 72 72 6F 27 00 00 00 00 00 00 00 00 00 00 00 00 00 00 A9 CF 02 00 00 00 6B CF 02 00 EB}\r\n')     # write a string
     ser.write(b'send 0x2707 1 1\r\n')     # write a string  
 
-
-ser = serial.Serial(SERIAL_PORT, 112500, timeout=0, parity=serial.PARITY_EVEN, rtscts=0)  
+    
+ser = serial.Serial('COM6', 112500, timeout=0, parity=serial.PARITY_EVEN, rtscts=0)  
 t1 = threading.Thread(target = Task1, args=[ser])
 Report("Starting Thread 1")
 t1.start()
@@ -126,43 +111,20 @@ textExample=Text(root, height=15, width=40)
 textExample.place(relx = 0.99, rely =0 , anchor=NE)
 Button_Send=Button(root, height=1, width=10, text="Send", command=getTextInput)
 Button_Send.pack()
-
 Y=0.38
 DIST=0.1
-n=1
-
-Button_NwkCreator0= Button(root, text="Nwk Creator Distr",command=nwk_creator0)
-Button_NwkCreator0.place(relx = 0.7, rely = Y, anchor = CENTER)
-
 Button_NwkLeave= Button(root, text="Nwk Leave",command=nwk_leave)
 Button_NwkLeave.place(relx = 0.9, rely = Y, anchor = CENTER)
-
-Button_NwkCreator1= Button(root, text="Nwk Creator Centr",command=nwk_creator1)
-Button_NwkCreator1.place(relx = 0.7, rely = Y+(n*DIST), anchor = CENTER)
-
-
 Button_NwkSteering= Button(root, text="Nwk Steering",command=nwk_steering)
-Button_NwkSteering.place(relx = 0.9, rely = Y+(n*DIST), anchor = CENTER)
-n+=1
-
-Button_NwkOpen= Button(root, text="Nwk Open",command=nwk_open)
-Button_NwkOpen.place(relx = 0.7, rely = Y+(n*DIST), anchor = CENTER)
-
-
+Button_NwkSteering.place(relx = 0.9, rely = Y+DIST, anchor = CENTER)
 Button_NwkInfo= Button(root, text="Info",command=nwk_info)
-Button_NwkInfo.place(relx = 0.9, rely = Y+(n*DIST), anchor = CENTER)
-n+=1
-
+Button_NwkInfo.place(relx = 0.9, rely = Y+DIST+DIST, anchor = CENTER)
 Button_ImageNotify= Button(root, text="ImageNotify",command=ImageNotify)
-Button_ImageNotify.place(relx = 0.9, rely = Y+(n*DIST), anchor = CENTER)
-n+=1
-
+Button_ImageNotify.place(relx = 0.9, rely = Y+DIST+DIST+DIST, anchor = CENTER)
 Button_QueryResponse= Button(root, text="QueryResponse",command=QueryResponse)
-Button_QueryResponse.place(relx = 0.9, rely = Y+(n*DIST), anchor = CENTER)
-n+=1
+Button_QueryResponse.place(relx = 0.9, rely = Y+DIST+DIST+DIST+DIST, anchor = CENTER)
 
 Button_BlockResponse= Button(root, text="BlockResponse",command=BlockResponse)
-Button_BlockResponse.place(relx = 0.9, rely = Y+(n*DIST), anchor = CENTER)
-n+=1
+Button_BlockResponse.place(relx = 0.9, rely = Y+DIST+DIST+DIST+DIST+DIST, anchor = CENTER)
 root.bind('<Return>', SendText)
 root.mainloop()

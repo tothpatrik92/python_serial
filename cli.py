@@ -64,7 +64,7 @@ def Task2(ser):
 
 def Main():
     #ser = serial.Serial(7, 11520)
-    ser = serial.Serial('COM7', 112500, timeout=0, parity=serial.PARITY_EVEN, rtscts=0)
+    ser = serial.Serial('COM6', 112500, timeout=0, parity=serial.PARITY_EVEN, rtscts=0)
     t1 = threading.Thread(target = Task1, args=[ser])
     t2 = threading.Thread(target = Task2, args=[ser])
     Report("Starting Thread 1")
